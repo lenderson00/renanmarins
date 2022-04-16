@@ -1,22 +1,19 @@
-import type { NextPage } from 'next'
+import type { InferGetStaticPropsType, NextPage } from 'next'
 import Image from 'next/image'
 
 import { Button } from '../components/Button/Button'
+import { getAllLinks } from '../lib/links'
 
-const listOfData = [
-  {
-    title: 'Next.js',
-    url: 'https://nextjs.org/',
-  }, {
-    title: 'React',
-    url: 'https://reactjs.org/',
-  }, {
-    title: 'TypeScript',
-    url: 'https://www.typescriptlang.org/',
+export const getStaticProps = async () => {
+  const links = await getAllLinks()
+  return {
+    props: {
+      links
+    },
   }
-]
+}
 
-const Home: NextPage = () => {
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
   return (
     <div className='px-[5vw] py-8 bg-gradient-to-b from-green-400 to-blue-400 min-h-screen flex justify-center items-center'>
       <div className='w-full '>
@@ -28,7 +25,7 @@ const Home: NextPage = () => {
           <p className='font-bold text-2xl text-white'>Renan Marins</p>
         </div>
         <ul className=' flex flex-col gap-4 py-4 mt-8  max-w-2xl mx-auto px-[5vw]'>
-          {listOfData.map(item => {
+          {props.links.map(item => {
             return (
               <Button title={item.title} url={item.url} key={item.title}/>
             )
