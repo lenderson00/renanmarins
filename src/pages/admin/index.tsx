@@ -9,6 +9,9 @@ import { Button } from '../../components/Button/Button'
 import Modal from 'react-modal'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
+import { doc, getDoc } from 'firebase/firestore'
+import { firestore } from '../../lib/firebase'
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 
 const user = {
   name: 'Renan Marins',
@@ -44,6 +47,13 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [link, setLink] = useState<Link | null>(null);
+
+  const linkRef = doc(firestore, 'links')
+
+  const [realtimePost] = useDocumentData(linkRef);
+
+  console.log(realtimePost)
+
 
   function openModal() {
     setIsOpen(true);
@@ -312,9 +322,7 @@ export const Delete: React.FC<{link: Link, closeModal: () => void}> = (props) =>
 
 export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  
-
+  const [link, setLink] = useState<Link>(props.link)
   
   const onSubmit = async (data: any) =>{
     toast.promise(
@@ -354,9 +362,8 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
                         id="about"
                         className="px-4 py-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                         placeholder="Título"
-                        defaultValue={''}
+                        defaultValue={link.title}
                         {...register("title")}
-                        value={props.link.title}
                       />
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
@@ -376,9 +383,10 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
                         <input
                           {...register("url")}
                           type="text"
+                          defaultValue={link.url}
                           id="company-website"
                           className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                          value={props.link.url.replace('http://', '')}
+                          placeholder="www.example.com"
                         />
                       </div>
                     </div>
