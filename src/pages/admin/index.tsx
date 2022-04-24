@@ -43,16 +43,10 @@ export const getStaticProps = async () => {
 }
 
 const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) => {
-
+  console.log(props)
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [link, setLink] = useState<Link | null>(null);
-
-  const linkRef = doc(firestore, 'links')
-
-  const [realtimePost] = useDocumentData(linkRef);
-
-  console.log(realtimePost)
 
 
   function openModal() {
@@ -71,18 +65,18 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
             <>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <img
-                        className="h-8 w-8"
+                        className="w-8 h-8"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
                         alt="Workflow"
                       />
                     </div>
                     <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
+                      <div className="flex items-baseline ml-10 space-x-4">
                         {navigation.map((item) => (
                           <a
                             key={item.name}
@@ -102,14 +96,14 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
                     </div>
                   </div>
                   <div className="hidden md:block">
-                    <div className="ml-4 flex items-center md:ml-6">
+                    <div className="flex items-center ml-4 md:ml-6">
 
                       {/* Profile dropdown */}
-                      <Menu as="div" className="ml-3 relative">
+                      <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                          <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img className="w-8 h-8 rounded-full" src={user.imageUrl} alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -121,7 +115,7 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
@@ -142,14 +136,14 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
                       </Menu>
                     </div>
                   </div>
-                  <div className="-mr-2 flex md:hidden">
+                  <div className="flex -mr-2 md:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-gray-800 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
-                        <XIcon className="block h-6 w-6" aria-hidden="true" />
+                        <XIcon className="block w-6 h-6" aria-hidden="true" />
                       ) : (
-                        <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                        <MenuIcon className="block w-6 h-6" aria-hidden="true" />
                       )}
                     </Disclosure.Button>
                   </div>
@@ -176,7 +170,7 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
                 <div className="pt-4 pb-3 border-t border-gray-700">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img className="w-10 h-10 rounded-full" src={user.imageUrl} alt="" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>
@@ -184,19 +178,19 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
                     </div>
                     <button
                       type="button"
-                      className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      className="flex-shrink-0 p-1 ml-auto text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                     >
                       <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      <BellIcon className="w-6 h-6" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="mt-3 px-2 space-y-1">
+                  <div className="px-2 mt-3 space-y-1">
                     {userNavigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+                        className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700"
                       >
                         {item.name}
                       </Disclosure.Button>
@@ -209,23 +203,23 @@ const Admin: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (props) 
         </Disclosure>
 
         <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           </div>
         </header>
         <main>
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
             {/* Replace with your content */}
               <Form />
             {/* /End replace */}
             <div>
-            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 border-2 rounded-xl border-solid border-gray-200 mt-16">
+            <div className="px-4 py-4 mx-auto mt-16 border-2 border-gray-200 border-solid max-w-7xl sm:px-6 lg:px-8 rounded-xl">
               <h1 className="text-3xl font-bold text-gray-900">Links</h1>
             </div>
-            <ul className='flex flex-col gap-4 py-8 px-4 lg:px-8'>
+            <ul className='flex flex-col gap-4 px-4 py-8 lg:px-8'>
             {props.links.map(item => {
             return (
-              <li key={item.title} className="font-bold text-xl flex items-center gap-4">
+              <li key={item.title} className="flex items-center gap-4 text-xl font-bold">
               {item.title}
                 <div className='cursor-pointer' onClick={() => {
                   setLink(item)
@@ -299,16 +293,16 @@ export const Delete: React.FC<{link: Link, closeModal: () => void}> = (props) =>
     <div className='py-2'>
       <div className='flex justify-between'>
         <h1 className='text-3xl font-bold'>Delete Link</h1>
-        <button className='cursor-pointer mr-4' onClick={() => props.closeModal()}> X </button>
+        <button className='mr-4 cursor-pointer' onClick={() => props.closeModal()}> X </button>
       </div>
-      <div className='py-4 flex flex-col gap-8'>
+      <div className='flex flex-col gap-8 py-4'>
         <p className='text-lg font-semibold'>Are you sure you want to delete this link?</p>
         <div className='flex justify-end '>
           <div className='flex gap-4'>
-          <button className='bg-slate-200 text-black font-semibold px-4 py-2 rounded-md' onClick={() => {
+          <button className='px-4 py-2 font-semibold text-black rounded-md bg-slate-200' onClick={() => {
             props.closeModal()
           }}>Cancelar</button>
-          <button className='bg-red-500 text-white px-4 py-2 rounded-md' onClick={() => {
+          <button className='px-4 py-2 text-white bg-red-500 rounded-md' onClick={() => {
             deleteLink(props.link.title)
             props.closeModal()
           }}>Deletar</button>
@@ -351,7 +345,7 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
               <div className=" sm:rounded-md sm:overflow-hidden">
-                <div className="py-5 bg-white space-y-6 sm:p-6">
+                <div className="py-5 space-y-6 bg-white sm:p-6">
                   
                 <div>
                     <label htmlFor="about" className="block text-sm font-medium text-gray-700">
@@ -360,7 +354,7 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
                     <div className="mt-1">
                       <input
                         id="about"
-                        className="px-4 py-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                        className="block w-full px-4 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         placeholder="Título"
                         defaultValue={link.title}
                         {...register("title")}
@@ -376,8 +370,8 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
                       <label htmlFor="company-website" className="block text-sm font-medium text-gray-700">
                         Website
                       </label>
-                      <div className="mt-1 flex rounded-md shadow-sm">
-                        <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                      <div className="flex mt-1 rounded-md shadow-sm">
+                        <span className="inline-flex items-center px-3 text-sm text-gray-500 border border-r-0 border-gray-300 rounded-l-md bg-gray-50">
                           http://
                         </span>
                         <input
@@ -385,7 +379,7 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
                           type="text"
                           defaultValue={link.url}
                           id="company-website"
-                          className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                          className="flex-1 block w-full border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md sm:text-sm"
                           placeholder="www.example.com"
                         />
                       </div>
@@ -394,10 +388,10 @@ export const Edit: React.FC<{link: Link, closeModal: () => void}>  = (props) => 
 
                  
                 </div>
-                <div className="px-4 py-3  text-right sm:px-6">
+                <div className="px-4 py-3 text-right sm:px-6">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-4 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center justify-center gap-4 px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                   <p className='text-lg'>
                     Update Link
